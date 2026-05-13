@@ -2,8 +2,8 @@ const mineflayer = require("mineflayer");
 const express = require("express");
 
 // ─── CONFIG ────────────────────────────────────────────────────────────────
-const HOST = "your-server.aternos.me"; // ← Replace with your Aternos address
-const PORT = 25565;
+const HOST = "Alpheus0.aternos.me"; // ← Replace with your Aternos address
+const PORT = 44710;
 const USERNAME = "AFKBot"; // ← Bot's username (use a cracked/offline name)
 const RECONNECT_DELAY_MS = 10000; // Wait 10s before reconnecting
 // ───────────────────────────────────────────────────────────────────────────
@@ -11,7 +11,7 @@ const RECONNECT_DELAY_MS = 10000; // Wait 10s before reconnecting
 // Keep-alive web server so Glitch doesn't shut the project down
 const app = express();
 app.get("/", (req, res) => res.send("AFK Bot is running!"));
-app.listen(3000, () => console.log("Keep-alive web server started on port 3000"));
+app.listen(process.env.PORT || 3000, () => console.log("Keep-alive web server started"));
 
 function createBot() {
   const bot = mineflayer.createBot({

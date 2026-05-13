@@ -5,7 +5,7 @@ const express = require("express");
 const HOST = "Alpheus0.aternos.me"; // ← Replace with your Aternos address
 const PORT = 44710;
 const USERNAME = "AFKBot"; // ← Bot's username (use a cracked/offline name)
-const RECONNECT_DELAY_MS = 10000; // Wait 10s before reconnecting
+const RECONNECT_DELAY_MS = 30000; // Wait 10s before reconnecting
 // ───────────────────────────────────────────────────────────────────────────
 
 // Keep-alive web server so Glitch doesn't shut the project down
@@ -18,7 +18,7 @@ function createBot() {
     host: HOST,
     port: PORT,
     username: USERNAME,
-    version: false,      // Auto-detect server version
+    version: "26.1.2",      // Auto-detect server version
     auth: "offline",     // Use "microsoft" if your server requires a real account
   });
 

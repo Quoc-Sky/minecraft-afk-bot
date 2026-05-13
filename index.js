@@ -74,11 +74,19 @@ function createBot() {
   }
  
   bot.on("kicked", (reason) => {
+    // Reason can be a string, object, or JSON — safely convert to string
     let parsed = reason;
-    try { parsed = JSON.parse(reason)?.text || reason; } catch {}
+    try {
+      if (typeof reason === "object") {
+        parsed = reason.text || reason.translate || JSON.stringify(reason);
+      } else {
+        parsed = JSON.parse(reason)?.text || reason;
+      }
+    } catch {}
+    const parsedStr = String(parsed).toLowerCase();
  
     // If throttled, wait the maximum time before trying again
-    if (parsed.toLowerCase().includes("throttl")) {
+    if (parsedStr.includes("throttl")) {
       reconnectDelay = MAX_RECONNECT_MS;
     }
  

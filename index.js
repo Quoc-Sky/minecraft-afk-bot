@@ -18,7 +18,7 @@ function createBot() {
     host: HOST,
     port: PORT,
     username: USERNAME,
-    version: "26.1.2",      // Auto-detect server version
+    version: false,      // Auto-detect server version
     auth: "offline",     // Use "microsoft" if your server requires a real account
   });
 

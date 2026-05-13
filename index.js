@@ -5,8 +5,8 @@ const express = require("express");
 const HOST = "Alpheus0.aternos.me"; // ← Your Aternos address
 const PORT = 44710;
 const USERNAME = "AFKBot";
-const MIN_RECONNECT_MS = 60000;   // Wait at least 60s before reconnecting
-const MAX_RECONNECT_MS = 600000;  // Cap at 10 minutes max wait
+const MIN_RECONNECT_MS = 15000;   // Wait at least 15s before reconnecting
+const MAX_RECONNECT_MS = 60000;   // Cap at 1 minute max wait
 // ───────────────────────────────────────────────────────────────────────────
 
 // Keep-alive web server

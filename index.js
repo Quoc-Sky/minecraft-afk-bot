@@ -2,8 +2,8 @@ const mineflayer = require("mineflayer");
 const express = require("express");
 
 // ─── CONFIG ────────────────────────────────────────────────────────────────
-const HOST = "your-server.aternos.me"; // ← Your Aternos address
-const PORT = 25565;
+const HOST = "Alpheus0.aternos.me"; // ← Your Aternos address
+const PORT = 44710;
 const USERNAME = "AFKBot";
 const MIN_RECONNECT_MS = 60000;   // Wait at least 60s before reconnecting
 const MAX_RECONNECT_MS = 600000;  // Cap at 10 minutes max wait

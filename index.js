@@ -35,29 +35,32 @@ function createBot() {
     checkTimeoutInterval: 30000,
   });
  
-  let moveTimeout = null;
-  let lookTimeout = null;
+  let moveInterval = null;
+  let lookInterval = null;
  
   function randomMove() {
-    if (!bot.entity) return;
+    // Always reschedule even if entity isn't ready yet
     const controls = ["forward", "back", "left", "right", "forward", "forward"];
     const move = controls[Math.floor(Math.random() * controls.length)];
     const duration = 500 + Math.random() * 2000;
-    bot.setControlState(move, true);
  
-    if (Math.random() > 0.5) {
+    if (bot.entity) {
+      bot.setControlState(move, true);
+ 
+      // Sometimes jump mid-move
+      if (Math.random() > 0.5) {
+        setTimeout(() => {
+          if (bot.entity) {
+            bot.setControlState("jump", true);
+            setTimeout(() => bot.setControlState("jump", false), 300);
+          }
+        }, Math.random() * duration);
+      }
+ 
       setTimeout(() => {
-        if (!bot.entity) return;
-        bot.setControlState("jump", true);
-        setTimeout(() => bot.setControlState("jump", false), 300);
-      }, Math.random() * duration);
+        bot.setControlState(move, false);
+      }, duration);
     }
- 
-    setTimeout(() => {
-      bot.setControlState(move, false);
-      const nextMove = 20000 + Math.random() * 40000;
-      moveTimeout = setTimeout(randomMove, nextMove);
-    }, duration);
   }
  
   function randomLook() {
@@ -65,13 +68,11 @@ function createBot() {
     const yaw = (Math.random() * 2 - 1) * Math.PI;
     const pitch = (Math.random() - 0.5) * Math.PI / 2;
     bot.look(yaw, pitch, true);
-    const nextLook = 15000 + Math.random() * 30000;
-    lookTimeout = setTimeout(randomLook, nextLook);
   }
  
   function cleanup() {
-    clearTimeout(moveTimeout);
-    clearTimeout(lookTimeout);
+    clearInterval(moveInterval);
+    clearInterval(lookInterval);
   }
  
   bot.on("login", () => {
@@ -79,11 +80,17 @@ function createBot() {
     reconnectDelay = MIN_RECONNECT_MS;
   });
  
-  // Start moving only AFTER the bot has fully spawned in the world
+  // Start moving only AFTER bot has fully spawned
   bot.once("spawn", () => {
     console.log(`[${new Date().toLocaleTimeString()}] 🌍 Bot spawned, starting movement...`);
-    moveTimeout = setTimeout(randomMove, 5000);
-    lookTimeout = setTimeout(randomLook, 8000);
+ 
+    // Use setInterval so the loop NEVER breaks — fires every 30s no matter what
+    moveInterval = setInterval(randomMove, 30000);
+    lookInterval = setInterval(randomLook, 20000);
+ 
+    // Do one immediate move so it doesn't stand still for the first 30s
+    setTimeout(randomMove, 3000);
+    setTimeout(randomLook, 5000);
   });
  
   function scheduleReconnect(reason) {
